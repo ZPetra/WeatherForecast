@@ -2,6 +2,7 @@ import Card from ".././UI/Card";
 import { useState, useEffect } from "react";
 import useHttp from ".././hooks/use-http";
 import WeatherDetails from "./WeatherDetails";
+import GoogleMap from "./GoogleMap";
 
 const Weather = () => {
   const { isLoading, error, sendRequest } = useHttp();
@@ -30,8 +31,8 @@ const Weather = () => {
     navigator.geolocation.getCurrentPosition((position) =>
       setCurrentLocation({
         latitude: position.coords.latitude,
-        longitude: position.coords.longitude
-        })
+        longitude: position.coords.longitude,
+      })
     );
   }, []);
 
@@ -55,24 +56,27 @@ const Weather = () => {
   }, [weatherForTodayList, currentDateTime]); */
 
   return (
-    <Card>
-      {weatherForTodayList &&
-        weatherForTodayList
-          .filter((f) => f.time.includes(currentDateTime))
-          .map((weather, i) => {
-            return (
-              <WeatherDetails
-                key={i}
-                temperature={weather.data.instant.details.air_temperature}
-                wind={weather.data.instant.details.wind_speed}
-                image={weather.data.next_1_hours.summary.symbol_code}
-                precipitation={
-                  weather.data.next_1_hours.details.precipitation_amount
-                }
-              ></WeatherDetails>
-            );
-          })}
-    </Card>
+    <div>
+      <GoogleMap></GoogleMap>
+      <Card>
+        {weatherForTodayList &&
+          weatherForTodayList
+            .filter((f) => f.time.includes(currentDateTime))
+            .map((weather, i) => {
+              return (
+                <WeatherDetails
+                  key={i}
+                  temperature={weather.data.instant.details.air_temperature}
+                  wind={weather.data.instant.details.wind_speed}
+                  image={weather.data.next_1_hours.summary.symbol_code}
+                  precipitation={
+                    weather.data.next_1_hours.details.precipitation_amount
+                  }
+                ></WeatherDetails>
+              );
+            })}
+      </Card>
+    </div>
   );
 };
 
