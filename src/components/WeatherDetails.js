@@ -10,8 +10,11 @@ const WeatherDetails = (props) => {
       cssClass={classes.box}
       sx={{ width: "100%", height: "100%", maxWidth: 500, margin: 3 }}
     >
+    {/*  <Typography variant="h6" component="div" gutterBottom>
+        Timespan: {props.timespan}
+      </Typography> */}
       <Typography variant="h4" component="div" gutterBottom>
-        Oslo
+        {props.city}
       </Typography>
       <Typography variant="h6" component="div" gutterBottom>
         Temperature: {props.temperature}

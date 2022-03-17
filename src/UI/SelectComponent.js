@@ -8,7 +8,7 @@ import Select from "@mui/material/Select";
 const SelectComponent = (props) => {
   
   const handleChange = (event) => {
-    props.filterMovies(event.target.value);
+    props.searchWeather(event.target.value);
   };
 
   return (
@@ -23,11 +23,10 @@ const SelectComponent = (props) => {
           value={props.filter}
           label={props.filterName}
           onChange={handleChange}
-        >
-          <MenuItem key={props.default.toLowercase()} value={props.default.toLowercase()}><em>{props.default}</em></MenuItem>
-          {props.items &&
+        >  
+            {props.items &&
             props.items.map((item) => {
-              return <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>;
+              return <MenuItem key={item.id} value={item.id} name={item.city}>{item.city}</MenuItem>;
             })}
         </Select>
       </FormControl>

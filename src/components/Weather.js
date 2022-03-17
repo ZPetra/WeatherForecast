@@ -3,11 +3,11 @@ import { useState, useEffect } from "react";
 import useHttp from ".././hooks/use-http";
 import WeatherDetails from "./WeatherDetails";
 
-const Weather = () => {
+const Weather = (props) => {
   const { isLoading, error, sendRequest } = useHttp();
   const [weatherForTodayList, setWeatherForTodayList] = useState([]);
   const [currentDateTime, setCurrentDateTime] = useState("");
-  const [location, setCurrentLocation] = useState({
+  const [selectedPlace, setSelectedPlace] = useState({
     latitude: "",
     longitude: "",
   });
@@ -17,62 +17,88 @@ const Weather = () => {
   };
 
   useEffect(() => {
-    //YYYY-MM-dd
-    var date = new Date().toISOString().slice(0, 10);
-    //HH:
-    var time = new Date()
-      .toTimeString()
-      .replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1")
-      .slice(0, 3);
-    setCurrentDateTime(date + "T" + time);
+    setCurrentDateTime(new Date());
 
     //get current location
     navigator.geolocation.getCurrentPosition((position) =>
-      setCurrentLocation({
+      setSelectedPlace({
         latitude: position.coords.latitude,
-        longitude: position.coords.longitude
-        })
+        longitude: position.coords.longitude,
+        city: "Oslo",
+      })
     );
   }, []);
 
   useEffect(() => {
-    if (location.latitude && location.longitude) {
+    if (props.city != null) {
+      setSelectedPlace(props.city[0]);
+    }
+
+    if (selectedPlace.latitude && selectedPlace.longitude) {
       sendRequest(
         {
-          url: `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${location.latitude}&lon=${location.longitude}`,
+          url: `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${selectedPlace.latitude}&lon=${selectedPlace.longitude}`,
         },
         applyWeather
       );
     }
-  }, [sendRequest, location.latitude, location.longitude]);
-
-  //this is just for testing
-  /*  useEffect(() => {
-    const wfortoday = weatherForTodayList && currentDateTime && weatherForTodayList
-            .filter((f) => f.time.includes(currentDateTime));
-
-    console.log("Weather: " + wfortoday);
-  }, [weatherForTodayList, currentDateTime]); */
+  }, [sendRequest, selectedPlace, props.city]);
 
   return (
-    <Card>
-      {weatherForTodayList &&
-        weatherForTodayList
-          .filter((f) => f.time.includes(currentDateTime))
-          .map((weather, i) => {
-            return (
-              <WeatherDetails
-                key={i}
-                temperature={weather.data.instant.details.air_temperature}
-                wind={weather.data.instant.details.wind_speed}
-                image={weather.data.next_1_hours.summary.symbol_code}
-                precipitation={
-                  weather.data.next_1_hours.details.precipitation_amount
-                }
-              ></WeatherDetails>
-            );
-          })}
-    </Card>
+    <div>
+      <Card>
+        {weatherForTodayList &&
+          weatherForTodayList
+            .filter(
+              (f) =>
+                currentDateTime.setHours(currentDateTime.getHours() - 1) <
+                  new Date(f.time) &&
+                new Date(f.time) <
+                  currentDateTime.setHours(currentDateTime.getHours() + 1)
+            )
+            .map((weather, i) => {
+              return (
+                <WeatherDetails
+                  timespan={"Now"}
+                  key={i}
+                  city={selectedPlace.city}
+                  temperature={weather.data.instant.details.air_temperature}
+                  wind={weather.data.instant.details.wind_speed}
+                  image={weather.data.next_1_hours.summary.symbol_code}
+                  precipitation={
+                    weather.data.next_1_hours.details.precipitation_amount
+                  }
+                ></WeatherDetails>
+              );
+            })}
+      </Card>
+      {/*  <Card>
+        {weatherForTodayList &&
+          weatherForTodayList
+            .filter(
+              (f) =>
+              currentDateTime.setHours(currentDateTime.getHours() + 2) <
+                  new Date(f.time) &&
+                new Date(f.time) <
+                  currentDateTime.setHours(currentDateTime.getHours() + 3)
+                )
+            .map((weather, i) => {
+              return (
+                <WeatherDetails
+                                timespan={"Next 3 hours"}
+                  key={i}
+                  city={selectedPlace.city}
+                  temperature={weather.data.instant.details.air_temperature}
+                  wind={weather.data.instant.details.wind_speed}
+                  image={weather.data.next_1_hours.summary.symbol_code}
+                  precipitation={
+                    weather.data.next_1_hours.details.precipitation_amount
+                  }
+                ></WeatherDetails>
+              );
+            })}
+      </Card> */}
+    </div>
   );
 };
 
