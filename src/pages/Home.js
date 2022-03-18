@@ -30,7 +30,7 @@ const Home = () => {
   return (
     <div>
       <SelectComponent
-        filter={"Cities"}
+        //filter={""}
         filterName={"Cities"}
         items={PLACES}
         searchWeather={searchWeather}

@@ -2,6 +2,8 @@ import Card from ".././UI/Card";
 import { useState, useEffect } from "react";
 import useHttp from ".././hooks/use-http";
 import WeatherDetails from "./WeatherDetails";
+import ImageComponent from "../UI/ImageComponent";
+import classes from "./Weather.module.css";
 
 const Weather = (props) => {
   const { isLoading, error, sendRequest } = useHttp();
@@ -58,46 +60,40 @@ const Weather = (props) => {
             )
             .map((weather, i) => {
               return (
-                <WeatherDetails
-                  timespan={"Now"}
-                  key={i}
-                  city={selectedPlace.city}
-                  temperature={weather.data.instant.details.air_temperature}
-                  wind={weather.data.instant.details.wind_speed}
-                  image={weather.data.next_1_hours.summary.symbol_code}
-                  precipitation={
-                    weather.data.next_1_hours.details.precipitation_amount
-                  }
-                ></WeatherDetails>
+                <div key={i} className={classes["grid-container"]}>
+                  <div>
+                    <WeatherDetails
+                      timespan={"Now"}
+                      city={selectedPlace.city}
+                      temperature={weather.data.instant.details.air_temperature}
+                      wind={weather.data.instant.details.wind_speed}
+                      image={weather.data.next_1_hours.summary.symbol_code}
+                      precipitation={
+                        weather.data.next_1_hours.details.precipitation_amount
+                      }
+                    ></WeatherDetails>
+                  </div>
+                  <div className={classes["grid-container-images"]}>
+                    <div>
+                      <ImageComponent
+                        title={"Next 6 hours: "}
+                        image={weather.data.next_6_hours.summary.symbol_code}
+                        precipitation={
+                          weather.data.next_6_hours.details.precipitation_amount
+                        }
+                      ></ImageComponent>
+                    </div>
+                    <div>
+                      <ImageComponent
+                        title={"Next 12 hours: "}
+                        image={weather.data.next_12_hours.summary.symbol_code}
+                      ></ImageComponent>
+                    </div>
+                  </div>
+                </div>
               );
             })}
       </Card>
-      {/*  <Card>
-        {weatherForTodayList &&
-          weatherForTodayList
-            .filter(
-              (f) =>
-              currentDateTime.setHours(currentDateTime.getHours() + 2) <
-                  new Date(f.time) &&
-                new Date(f.time) <
-                  currentDateTime.setHours(currentDateTime.getHours() + 3)
-                )
-            .map((weather, i) => {
-              return (
-                <WeatherDetails
-                                timespan={"Next 3 hours"}
-                  key={i}
-                  city={selectedPlace.city}
-                  temperature={weather.data.instant.details.air_temperature}
-                  wind={weather.data.instant.details.wind_speed}
-                  image={weather.data.next_1_hours.summary.symbol_code}
-                  precipitation={
-                    weather.data.next_1_hours.details.precipitation_amount
-                  }
-                ></WeatherDetails>
-              );
-            })}
-      </Card> */}
     </div>
   );
 };

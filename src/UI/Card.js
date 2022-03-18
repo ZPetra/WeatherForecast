@@ -12,7 +12,7 @@ const Card = (props) => {
         bgcolor: "background.default",
         "& > :not(style)": {
           m: 2,
-          width: 400,
+          width: "50%",
           height: 400,
         },
       }}

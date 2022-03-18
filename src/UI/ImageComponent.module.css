@@ -1,0 +1,12 @@
+.visible {
+  visibility: visible;
+}
+
+.not-visible {
+  visibility: hidden;
+}
+
+.weather-image {
+  width: 80px;
+  height: 80px;
+}

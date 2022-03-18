@@ -1,0 +1,13 @@
+.grid-container{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 10px;
+}
+
+
+.grid-container-images{
+    display: grid;
+    grid-template-rows: auto auto auto;
+    margin: 25px;
+    margin-left: 50px;
+}

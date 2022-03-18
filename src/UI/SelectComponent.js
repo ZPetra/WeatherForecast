@@ -6,7 +6,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 const SelectComponent = (props) => {
-  
   const handleChange = (event) => {
     props.searchWeather(event.target.value);
   };
@@ -18,15 +17,19 @@ const SelectComponent = (props) => {
           {props.filterName}
         </InputLabel>
         <Select
+          defaultValue="1"
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={props.filter}
           label={props.filterName}
           onChange={handleChange}
-        >  
-            {props.items &&
+        >
+          {props.items &&
             props.items.map((item) => {
-              return <MenuItem key={item.id} value={item.id} name={item.city}>{item.city}</MenuItem>;
+              return (
+                <MenuItem key={item.id} value={item.id} name={item.city}>
+                  {item.city}
+                </MenuItem>
+              );
             })}
         </Select>
       </FormControl>
