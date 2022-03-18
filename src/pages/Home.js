@@ -1,5 +1,6 @@
 import Weather from ".././components/Weather";
 import SelectComponent from ".././UI/SelectComponent";
+import Map from ".././UI/Map";
 import { useState } from "react";
 
 const Home = () => {
@@ -27,14 +28,18 @@ const Home = () => {
     setcity(place);
   };
 
+  const handleCallback = (childData) =>{
+    console.log("Sent data:" + childData);
+  }
+
   return (
     <div>
       <SelectComponent
-        //filter={""}
         filterName={"Cities"}
         items={PLACES}
         searchWeather={searchWeather}
       ></SelectComponent>
+      <Map parentCallback={handleCallback}></Map>
       <Weather city={city}></Weather>
     </div>
   );

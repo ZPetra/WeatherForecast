@@ -48,7 +48,7 @@ const Weather = (props) => {
 
   return (
     <div>
-      <Card>
+      <Card width="50%">
         {weatherForTodayList &&
           weatherForTodayList
             .filter(
