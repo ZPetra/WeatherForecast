@@ -1,8 +1,9 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import classes from "./MyMapComponent.module.css";
 
 const MyMapComponent = () => {
-  let center;
-  let zoom;
+  let center = {lat: 59.9139, lng: 10.7522};
+  let zoom = 5;
   
   const ref = useRef();
 
@@ -13,7 +14,7 @@ const MyMapComponent = () => {
     });
   });
 
-  return <div ref={ref} id="map" />;
+  return <div ref={ref} id="map" className={classes.map} />;
 };
 
 export default MyMapComponent;

@@ -1,10 +1,10 @@
 import { Wrapper } from "@googlemaps/react-wrapper";
-import Map from "./Map";
+import MyMapComponent from "./MyMapComponent";
 
 const GoogleMap = () => {
   return (
     <Wrapper apiKey={"AIzaSyB8xL-iI2GOjrPFLphwBlarhd4ltVMHWKk"}>
-      <Map></Map>
+      <MyMapComponent></MyMapComponent>
     </Wrapper>
   );
 };
