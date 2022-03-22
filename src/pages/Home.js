@@ -2,6 +2,7 @@ import Weather from ".././components/Weather";
 import SelectComponent from ".././UI/SelectComponent";
 import Map from ".././UI/Map";
 import { useState } from "react";
+import ProposeTrip from "../components/ProposeTrip";
 
 const Home = () => {
   const PLACES = [
@@ -40,6 +41,7 @@ const Home = () => {
         searchWeather={searchWeather}
       ></SelectComponent>
       <Map parentCallback={handleCallback}></Map>
+      <ProposeTrip places={PLACES}></ProposeTrip>
       <Weather city={city}></Weather>
     </div>
   );
