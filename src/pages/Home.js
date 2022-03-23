@@ -1,12 +1,13 @@
 import Weather from ".././components/Weather";
 import SelectComponent from ".././UI/SelectComponent";
 import Map from ".././UI/Map";
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import ProposeTrip from "../components/ProposeTrip";
 import classes from "./Home.module.css";
 
 const Home = () => {
-  const PLACES = [
+  const PLACES = useMemo(() =>
+    [
     { id: "1", city: "Oslo", latitude: "59.911491", longitude: "10.757933" },
     { id: "2", city: "Drammen", latitude: "59.74389", longitude: "10.20449" },
     {
@@ -36,7 +37,7 @@ const Home = () => {
     },
     { id: "8", city: "Ålesund", latitude: "62.47225", longitude: "6.15492" },
     { id: "9", city: "Tønsberg", latitude: "59.26754", longitude: "10.40762" },
-  ];
+  ], []);
 
   const [city, setcity] = useState(null);
 
@@ -45,9 +46,9 @@ const Home = () => {
     setcity(place);
   };
 
-  const handleCallback = (childData) => {
+  /* const handleCallback = (childData) => {
     console.log("Sent data:" + childData);
-  };
+  }; */
 
   return (
     <div>
@@ -56,12 +57,13 @@ const Home = () => {
         items={PLACES}
         searchWeather={searchWeather}
       ></SelectComponent>
-      <Map parentCallback={handleCallback}></Map>
+      {/* <Map parentCallback={handleCallback} city={city}></Map> */}
+      <Map city={city}></Map>
       <div className={classes["grid-container"]}>
         <div className={classes["grid-item"]}>
           <Weather city={city}></Weather>
         </div>
-        <div className={[classes["grid-item"], classes.weather].join(' ')}>
+        <div className={[classes["grid-item"], classes.weather].join(" ")}>
           <ProposeTrip places={PLACES}></ProposeTrip>
         </div>
       </div>

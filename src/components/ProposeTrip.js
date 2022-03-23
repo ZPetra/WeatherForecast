@@ -102,11 +102,11 @@ const ProposeTrip = (props) => {
         );
       }
     });
-  }, [sendRequest, props.places]);
+  }, [sendRequest, props.places, applyWeather]);
 
   const proposeTrip = () => {
-    const suggestionSaturday = [];
-    const suggestionSunday = [];
+    let suggestionSaturday = [];
+    let suggestionSunday = [];
 
     //suggest all the places that doesn't have rain or snow or sleet on Saturday
     weatherListSaturday &&
@@ -132,14 +132,14 @@ const ProposeTrip = (props) => {
         }
       });
 
-    console.log("Suggestion saturday: " + suggestionSaturday);
-    console.log("Suggestion sunday: " + suggestionSunday);
+    /* console.log("Suggestion saturday: " + suggestionSaturday);
+    console.log("Suggestion sunday: " + suggestionSunday); */
 
     //make intersection array of those two arrays
     let finalSuggestion = suggestionSaturday.filter((sat) =>
       suggestionSunday.some((sun) => sat.city === sun.city)
     );
-    console.log("Final suggestion: " + finalSuggestion);
+    //console.log("Final suggestion: " + finalSuggestion);
     setSuggestion(finalSuggestion);
   };
 
