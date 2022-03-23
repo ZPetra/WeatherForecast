@@ -17,8 +17,8 @@ const Card = (props) => {
         },
       }}
     >
-      <Paper elevation={10}>
-          {props.children}
+      <Paper elevation={10} sx={{ margin: "0 5px" }}>
+        {props.children}
       </Paper>
     </Box>
   );
