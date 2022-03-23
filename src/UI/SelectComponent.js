@@ -11,7 +11,7 @@ const SelectComponent = (props) => {
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 120, margin: "0 30px", width: "300px" }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">
           {props.filterName}
