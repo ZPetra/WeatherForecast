@@ -1,12 +1,13 @@
 import React from "react";
 import { useState, useEffect, useCallback } from "react";
 import useHttp from ".././hooks/use-http";
+import classes from "./ProposeTrip.module.css";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import classes from "./ProposeTrip.module.css";
+import Tooltip from "@mui/material/Tooltip";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -146,13 +147,15 @@ const ProposeTrip = (props) => {
   return (
     <div className={classes["grid-container"]}>
       <div className={classes["grid-item"]}>
-        <Button
-          sx={{ margin: "0 30px" }}
-          variant="outlined"
-          onClick={proposeTrip}
-        >
-          Propose Weekend Trip
-        </Button>
+        <Tooltip disableFocusListener title="Note: Propose is based on 10 biggest places in Norway">
+          <Button
+            sx={{ margin: "0 30px" }}
+            variant="contained"
+            onClick={proposeTrip}
+          >
+            Propose Weekend Trip
+          </Button>
+        </Tooltip>
       </div>
       <div className={classes["grid-item"]}>
         {suggestion && (
