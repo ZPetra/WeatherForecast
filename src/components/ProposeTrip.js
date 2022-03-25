@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect, useCallback } from "react";
-import useHttp from ".././hooks/use-http";
+import useHttp from "../hooks/use-http";
 import classes from "./ProposeTrip.module.css";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
@@ -32,7 +32,7 @@ const ProposeTrip = (props) => {
           {
             id: id,
             city: city,
-            weather: weather,
+            weather: weather, //list of objects that represent temperature, wind and clouds every hour
           },
         ],
       ]);
@@ -53,12 +53,28 @@ const ProposeTrip = (props) => {
   }, []);
 
   const getWeatherForTheWeekday = (weekday, timeseries) => {
-    //getting the forecast for the noon
-    const forecast = timeseries.filter(
-      (ts) => ts.time === weekday.toISOString().slice(0, 10) + "T12:00:00Z"
+    let weather = [];
+    let forecast = [];
+    const array = Array.from(Array(24).keys());
+
+    array?.map((i) =>
+      forecast.push(
+        timeseries.filter((ts) =>
+          ts.time === weekday.toISOString().slice(0, 10) + (i < 10)
+            ? "T0"
+            : "T" + i + ":00:00Z"
+        )
+      )
     );
 
-    const weather = forecast[0].data.next_12_hours.summary.symbol_code;
+    forecast.map((f) =>
+      weather.push({
+        temperature: f[0].data.instant.details.air_temperature,
+        wind: f[0].data.instant.details.wind_speed,
+        clouds: f[0].data.instant.details.cloud_area_fraction,
+        summary: f[0].data.next_12_hours.summary.symbol_code,
+      })
+    );
 
     return weather;
   };
@@ -133,46 +149,66 @@ const ProposeTrip = (props) => {
         }
       });
 
-    /* console.log("Suggestion saturday: " + suggestionSaturday);
-    console.log("Suggestion sunday: " + suggestionSunday); */
-
     //make intersection array of those two arrays
     let finalSuggestion = suggestionSaturday.filter((sat) =>
       suggestionSunday.some((sun) => sat.city === sun.city)
     );
-    //console.log("Final suggestion: " + finalSuggestion);
+
+    //if final suggestion has more than 5 suggestions, filter those based on temperature and wind
+    if (finalSuggestion.length > 5) {
+      let temp = [];
+      //let wind = [];
+
+      finalSuggestion.map((fs) => {
+        let totalTemp = 0;
+        //let totalWind = 0;
+        fs.weather.forEach((w) => {
+          totalTemp = totalTemp + w.temperature;
+          //totalWind = totalWind + w.wind
+        });
+
+        //get average temperature and wind for every city
+        temp.push({ id: fs.id, city: fs.city, weather: totalTemp / 48 });
+        //wind.push({id: fs.id, city: fs.city, wind: totalWind/48});
+
+        return temp;
+      });
+
+      finalSuggestion =
+        temp &&
+        temp.sort(function (a, b) {
+          return b.weather - a.weather;
+        });
+      finalSuggestion = finalSuggestion.slice(0, 5);
+    }
+
     setSuggestion(finalSuggestion);
   };
 
   return (
-    <div className={classes["grid-container"]}>
-      <div className={classes["grid-item"]}>
-        <Tooltip disableFocusListener title="Note: Propose is based on 10 biggest places in Norway">
-          <Button
-            sx={{ margin: "0 30px" }}
-            variant="contained"
-            onClick={proposeTrip}
-          >
-            Propose Weekend Trip
-          </Button>
-        </Tooltip>
-      </div>
-      <div className={classes["grid-item"]}>
-        {suggestion && (
-          <Demo>
-            <List>
-              {suggestion.map((value) => (
-                <ListItem key={value.id}>
-                  <ListItemText
-                    primary={value.city}
-                    secondary={value.weather}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Demo>
-        )}
-      </div>
+    <div className={classes.trips}>
+      <Tooltip
+        disableFocusListener
+        title="Note: Propose is based on 10 biggest places in Norway"
+      >
+        <Button variant="contained" onClick={proposeTrip}>
+          Propose Weekend Trip
+        </Button>
+      </Tooltip>
+      {suggestion && (
+        <Demo>
+          <List>
+            {suggestion.map((value) => (
+              <ListItem key={value.id}>
+                <ListItemText
+                  primary={value.city}
+                  //secondary={value.weather}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </Demo>
+      )}
     </div>
   );
 };

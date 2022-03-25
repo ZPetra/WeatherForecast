@@ -60,7 +60,8 @@ const Weather = (props) => {
             )
             .map((weather, i) => {
               return (
-                <div key={i} className={classes["grid-container"]}>
+                <div key={i} className={classes["flex-container"]}>
+                  {/* <div key={i} className={classes["grid-container"]}> */}
                   <div>
                     <WeatherDetails
                       timespan={"Now"}

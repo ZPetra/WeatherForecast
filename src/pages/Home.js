@@ -1,7 +1,7 @@
 import Weather from ".././components/Weather";
 import SelectComponent from ".././UI/SelectComponent";
 import Map from ".././UI/Map";
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import ProposeTrip from "../components/ProposeTrip";
 import classes from "./Home.module.css";
 
@@ -53,7 +53,6 @@ const Home = (props) => {
   );
 
   const [city, setcity] = useState(null);
- 
 
   const searchWeather = (search) => {
     if (props.citiesInNorway != null) {
@@ -66,7 +65,6 @@ const Home = (props) => {
     console.log("Sent data:" + childData);
   }; */
 
-
   return (
     <div>
       <SelectComponent
@@ -74,13 +72,12 @@ const Home = (props) => {
         items={props.citiesInNorway != null ? props.citiesInNorway : []}
         searchWeather={searchWeather}
       ></SelectComponent>
-      {/* <Map parentCallback={handleCallback} city={city}></Map> */}
       <Map city={city}></Map>
-      <div className={classes["grid-container"]}>
-        <div className={classes["grid-item"]}>
+      <div className={classes["flex-container"]}>
+        <div>
           <Weather city={city}></Weather>
         </div>
-        <div className={[classes["grid-item"], classes.weather].join(" ")}>
+        <div className={classes.trip}>
           <ProposeTrip places={PLACES}></ProposeTrip>
         </div>
       </div>

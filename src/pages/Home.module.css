@@ -1,14 +1,22 @@
-.grid-container{
-    display: grid;
-    grid-template-columns: auto auto auto;
-    padding: 10px;
-  }
-
-  .grid-item{
-      vertical-align: middle;
-  }
-  
-
   .weather{
       margin: 20px 0;
+  }
+
+  .flex-container {
+      display: flex;
+      flex-direction: row;
+  }
+
+  .trip{
+      margin: 20px;
+  }
+
+  @media (max-width: 800px) {
+    .flex-container {
+      flex-direction: column;
+    }
+
+    .trip {
+        margin: 0 30px;
+    }
   }

@@ -1,6 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import classes from "./Card.module.css";
 
 const Card = (props) => {
   return (
@@ -17,7 +18,7 @@ const Card = (props) => {
         },
       }}
     >
-      <Paper elevation={10} sx={{ margin: "0 5px" }}>
+      <Paper elevation={10} sx={{ margin: "0 5px" }} className={classes.paper}>
         {props.children}
       </Paper>
     </Box>

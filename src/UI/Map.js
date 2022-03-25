@@ -31,7 +31,7 @@ const AddMarkerToClick = (props) => {
 
   return (
     <Marker position={marker}>
-      <Popup>Marker is at</Popup>
+      <Popup>Latitude: {marker.lat}, Longitude: {marker.lng}</Popup>
     </Marker>
   );
 };
